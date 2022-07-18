@@ -26,6 +26,13 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Get specific changed files
+      id: changed-files-specific
+      uses: tj-actions/changed-files@v17.3
+      with:
+        files: |
+          main.go
+
     - name: Automated Version Bump
       if: steps.changed-files-specific.outputs.any_changed == 'true'
       id: version-bump
@@ -43,12 +50,12 @@ jobs:
         NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
       run: echo "new tag $NEW_TAG"
 
-    # - name: Build, Tag, and Push the Image to Amazon ECR
-    #   id: build-image
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     ECR_REPOSITORY: ${{ env.ecr-repository }}
-    #     IMAGE_TAG: ${{ steps.version-bump.outputs.newTag }}
-    #   run: |
-    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Build, Tag, and Push the Image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ env.ecr-repository }}
+        IMAGE_TAG: ${{ steps.version-bump.outputs.newTag }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
