@@ -7,12 +7,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Hello returns a greeting for the named person.
+// Hello returns a greeting for the named person
 func Hello(name string) (string, error) {
 	if name == "" {
 		return "", errors.New("empty name")
 	}
-	message := fmt.Sprintf("Hi, %v. Welcome!", name)
+	message := fmt.Sprintf("Hi there, %v. Welcome!", name)
 	return message, nil
 }
 
