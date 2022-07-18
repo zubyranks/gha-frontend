@@ -1,6 +1,6 @@
 FROM golang:1.17-buster AS build
 
-WORKDIR /app
+WORKDIR /apps
 
 COPY go.mod ./
 COPY go.sum ./
