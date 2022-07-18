@@ -40,8 +40,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        skip-tag:  'true'
-        commit-message: 'CI: Bump Image version to {{version}}'
+        tag-prefix:  'v'
+        # skip-tag:  'true'
+        # commit-message: 'CI: Bump Image version to {{version}}'
   
     - name: Output Step
       id: version-output
