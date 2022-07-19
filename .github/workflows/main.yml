@@ -36,7 +36,6 @@ jobs:
       id: increment-git-tag
       run: |
         bash ./build/git_update.sh -v patch
-        echo "::set-output name=tag-name::git-tag"
 
     - name: Build, Tag, and Push the Image to Amazon ECR
       id: build-image
@@ -48,7 +47,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     outputs:
-      tag-name: ${{ steps.increment-git-tag.tag-name }}
+      tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
         
 
   publish:
