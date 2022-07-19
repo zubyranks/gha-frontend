@@ -46,6 +46,9 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    outputs:
+      tag-name: ${{ steps.build-image.outputs.git-tag }}
+        
 
   publish:
     runs-on: ubuntu-latest
@@ -60,7 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # tag_name: ${{ github.ref }}
-          tag_name: ${{ steps.increment-git-tag.outputs.git-tag }}
+          tag_name: ${{ needs.build-and-push.outputs.tag-name }}
           release_name: Release ${{ github.ref }}
           body: New release for ${{ github.sha }}
           draft: false
