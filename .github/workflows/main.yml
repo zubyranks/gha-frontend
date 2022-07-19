@@ -36,6 +36,7 @@ jobs:
       id: increment-git-tag
       run: |
         bash ./build/git_update.sh -v patch
+        echo "::set-output name=tag-name::git-tag"
 
     - name: Build, Tag, and Push the Image to Amazon ECR
       id: build-image
@@ -47,7 +48,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     outputs:
-      tag-name: ${{ steps.build-image.outputs.git-tag }}
+      tag-name: ${{ steps.increment-git-tag.tag-name }}
         
 
   publish:
@@ -62,8 +63,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          # tag_name: ${{ needs.build-and-push.outputs.tag-name }}
+          # tag_name: ${{ github.ref }}
+          tag_name: ${{ needs.build-and-push.outputs.tag-name }}
           release_name: Release ${{ github.ref }}
           body: New release for ${{ github.sha }}
           draft: false
