@@ -62,8 +62,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # tag_name: ${{ github.ref }}
-          tag_name: ${{ needs.build-and-push.outputs.tag-name }}
+          tag_name: ${{ github.ref }}
+          # tag_name: ${{ needs.build-and-push.outputs.tag-name }}
           release_name: Release ${{ github.ref }}
           body: New release for ${{ github.sha }}
           draft: false
