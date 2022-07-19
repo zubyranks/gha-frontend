@@ -26,7 +26,8 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - uses: whoan/docker-build-with-cache-action@v5
+    - name: Docker layer caching 
+      uses: whoan/docker-build-with-cache-action@v5
       with:
         # private registry
         registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
