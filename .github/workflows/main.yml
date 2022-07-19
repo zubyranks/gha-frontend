@@ -6,7 +6,7 @@ jobs:
   build-and-push:
     env:
       aws-region: us-west-2
-      ecr-repository: gha-getupside2
+      ecr-repository: gha-getupside
 
 
     name: Build and Push to ECR
@@ -26,11 +26,11 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Docker layer caching 
-      uses: whoan/docker-build-with-cache-action@v5
-      with:
-        registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
-        image_name: gha-getupside2
+    # - name: Docker layer caching 
+    #   uses: whoan/docker-build-with-cache-action@v5
+    #   with:
+    #     registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
+    #     image_name: ${{ env.ecr-repository }}
 
     - name: Automatic Tagging of Releases
       id: increment-git-tag
