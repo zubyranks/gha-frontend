@@ -26,11 +26,11 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Docker layer caching 
-      uses: whoan/docker-build-with-cache-action@v5
-      with:
-        registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
-        image_name: ${{ env.ecr-repository }}
+    # - name: Docker layer caching 
+    #   uses: whoan/docker-build-with-cache-action@v5
+    #   with:
+    #     registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
+    #     image_name: ${{ env.ecr-repository }}
 
     - name: Automatic Tagging of Releases
       id: increment-git-tag
@@ -47,19 +47,19 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-  # publish:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-  #     - name: Create Release
-  #       id: create_release
-  #       uses: actions/create-release@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         tag_name: ${{ github.ref }}
-  #         release_name: Release ${{ github.ref }}
-  #         body: New release for ${{ github.sha }}.
-  #         draft: false
-  #         prerelease: false
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: New release for ${{ github.sha }}.
+          draft: false
+          prerelease: false
