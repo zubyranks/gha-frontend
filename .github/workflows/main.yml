@@ -26,11 +26,6 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    # - name: Docker layer caching. 
-    #   uses: whoan/docker-build-with-cache-action@v5
-    #   with:
-    #     registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
-    #     image_name: ${{ env.ecr-repository }}
     - name: Cache Pip Packages
       uses: actions/cache@v3
       with:
@@ -53,6 +48,18 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Download the Artifact
+      uses: actions/download-artifact@v3
+      id: download
+      with:
+        name: 'workflow_lab_artifact'
+        path: ~/artifact
+
+    - name: 'Echo download path'
+      run: echo ${{steps.download.outputs.download-path}}
+
+    
     outputs:
       tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
         
