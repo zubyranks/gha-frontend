@@ -31,6 +31,13 @@ jobs:
     #   with:
     #     registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
     #     image_name: ${{ env.ecr-repository }}
+    - name: Cache Pip Packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
     - name: Automatic Tagging of Releases
       id: increment-git-tag
@@ -56,13 +63,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # tag_name: ${{ github.ref }}
           tag_name: ${{ needs.build-and-push.outputs.tag-name }}
           release_name: Release ${{ github.ref }}
           body: New release for ${{ github.sha }}
