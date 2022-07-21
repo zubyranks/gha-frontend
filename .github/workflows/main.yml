@@ -51,8 +51,8 @@ jobs:
     - name: Uploading the Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: 'workflow_lab_artifact'
-        path: out/
+        name: workflow_lab_artifact
+        path: .out/
 
     - name: Current path
       run: |
@@ -71,14 +71,13 @@ jobs:
       uses: actions/download-artifact@v3
       id: download
       with:
-        name: 'workflow_lab_artifact'
+        name: workflow_lab_artifact
         # path: /home/artifact/
 
-    - name: Zipping the Artifact
+    - name: Archive Artifact
       uses: thedoctor0/zip-release@main
       with:
-        type: 'zip'
-        filename: 'workflow_lab.zip'
+        filename: workflow_lab.zip
 
     - name: Create Release
       id: create-release
