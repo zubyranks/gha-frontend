@@ -53,9 +53,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: 'workflow_lab_artifact'
-        path: ~/artifact/upload
-
-
+        path: ~/artifact
 
     outputs:
       tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
@@ -70,7 +68,7 @@ jobs:
       id: download
       with:
         name: 'workflow_lab_artifact'
-        path: ~/artifact/download
+        path: ~/artifact
 
     - name: Zipping the Artifact
       uses: thedoctor0/zip-release@main
@@ -89,7 +87,7 @@ jobs:
         body: New release for ${{ github.sha }}
         draft: false
         prelease: false
-        
+
     - name: Upload Release Asset
       id: upload-release-asset
       uses: actions/upload-release-asset@v1
