@@ -54,6 +54,11 @@ jobs:
         name: 'workflow_lab_artifact'
         path: out/
 
+    - name: Current path
+      run: |
+        pwd
+        ls -la 
+
     outputs:
       tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
         
