@@ -28,7 +28,7 @@ jobs:
     - name: Cache Pip Packages
       uses: actions/cache@v3
       with:
-        path: ~/.cache/pip
+        path: /home/runner/work/gha-charles/gha-charles
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
@@ -74,7 +74,7 @@ jobs:
       with:
         name: static-site
 
-    - name: Archive Artifact
+    - name: Package Artifact
       uses: thedoctor0/zip-release@main
       with:
         filename: site.zip
@@ -98,7 +98,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: ./workflow_lab.zip
+        asset_path: ./site.zip
         asset_name: release-${{ needs.build-and-push.outputs.tag-name }}
         asset_content_type: application/zip
   
