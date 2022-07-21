@@ -52,7 +52,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: static-site
-        path: out/
+        path: .next/
 
     - name: Downloading the Artifact
       id: download
@@ -77,7 +77,7 @@ jobs:
     - name: Archive Artifact
       uses: thedoctor0/zip-release@main
       with:
-        filename: workflow_lab.zip
+        filename: site.zip
 
     - name: Create Release
       id: create-release
