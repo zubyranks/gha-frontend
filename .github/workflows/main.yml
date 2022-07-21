@@ -73,10 +73,10 @@ jobs:
     #   with:
     #     name: workflow_lab_artifact
 
-    # - name: Archive Artifact
-    #   uses: thedoctor0/zip-release@main
-    #   with:
-    #     filename: workflow_lab.zip
+    - name: Archive Artifact
+      uses: thedoctor0/zip-release@main
+      with:
+        filename: workflow_lab.zip
 
     - name: Create Release
       id: create-release
