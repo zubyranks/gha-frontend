@@ -67,7 +67,7 @@ jobs:
       id: download
       with:
         name: 'workflow_lab_artifact'
-        path: /home/artifact/
+        # path: /home/artifact/
 
     - name: Zipping the Artifact
       uses: thedoctor0/zip-release@main
