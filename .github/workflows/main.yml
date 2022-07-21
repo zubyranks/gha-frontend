@@ -52,7 +52,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: static-site
-        path: gha-charles/
+        path: /home/runner/work/gha-charles/gha-charles
 
     # - name: Downloading the Artifact
     #   id: download
