@@ -54,12 +54,6 @@ jobs:
         name: static-site
         path: /home/runner/work/gha-charles/gha-charles
 
-    # - name: Downloading the Artifact
-    #   id: download
-    #   uses: actions/download-artifact@v3
-    #   with:
-    #     name: static-site
-
     outputs:
       tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
         
@@ -101,21 +95,3 @@ jobs:
         asset_path: ./site.zip
         asset_name: release-${{ needs.build-and-push.outputs.tag-name }}
         asset_content_type: application/zip
-  
-
-    # - name: 'Echo download path'
-    #   run: echo ${{steps.download.outputs.download-path}}
-    #   - name: Checkout code
-    #     uses: actions/checkout@v2
-
-    #   - name: Create Release
-    #     id: create_release
-    #     uses: actions/create-release@v1
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     with:
-    #       tag_name: ${{ needs.build-and-push.outputs.tag-name }}
-    #       release_name: Release ${{ github.ref }}
-    #       body: New release for ${{ github.sha }}
-    #       draft: false
-    #       prerelease: false
