@@ -8,7 +8,6 @@ jobs:
       aws-region: us-west-2
       ecr-repository: gha-getupside
 
-
     name: Build and Push to ECR
     runs-on: ubuntu-latest
     steps:
@@ -53,7 +52,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: 'workflow_lab_artifact'
-        path: /home/
+        path: out/
 
     outputs:
       tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
