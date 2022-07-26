@@ -99,12 +99,13 @@ jobs:
         asset_name: release-${{ needs.build-and-push.outputs.tag-name }}
         asset_content_type: application/zip
 
-    - name: Dispatch Builds
-      uses: peter-evans/repository-dispatch@v2
-      with:
-        token: ${{ secrets.WORKFLOW_ACCESS }}
-        event-type: builds
-        client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
+    # - name: Dispatch Builds
+    #   uses: peter-evans/repository-dispatch@v2
+    #   with:
+    #     token: ${{ secrets.WORKFLOW_ACCESS }}
+    #     event-type: builds
+    #     client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
+    
     # - name: Dispatch Builds
     #   run: |
     #     curl -XPOST \
