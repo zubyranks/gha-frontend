@@ -7,7 +7,6 @@ jobs:
     env:
       aws-region: us-west-2
       ecr-repository: gha-getupside
-      repository: "zubyranks/gha-backend"
 
     name: Build and Push to ECR
     runs-on: ubuntu-latest
@@ -104,7 +103,7 @@ jobs:
       with:
         token: ${{ secrets.WORKFLOW_ACCESS }}
         event-type: builds
-        repository: ${{ env.repository }}
+        repository: zubyranks/gha-backend
         client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
     
     # - name: Dispatch Builds
