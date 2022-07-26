@@ -28,7 +28,7 @@ jobs:
     - name: Cache Pip Packages
       uses: actions/cache@v3
       with:
-        path: /home/runner/work/gha-charles/gha-charles
+        path: /home/runner/workgha-frontend/gha-frontend
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
@@ -54,7 +54,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: static-site
-        path: /home/runner/work/gha-charles/gha-charles
+        path: /home/runner/work/gha-frontend/gha-frontend
 
     outputs:
       tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
