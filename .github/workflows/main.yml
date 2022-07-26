@@ -104,6 +104,7 @@ jobs:
       with:
         token: ${{ secrets.WORKFLOW_ACCESS }}
         event-type: builds
+        repository: ${{ env.repository }}
         client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
     
     # - name: Dispatch Builds
