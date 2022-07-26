@@ -47,6 +47,8 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        pwd
+        ls -la
 
     - name: Uploading the Artifact
       uses: actions/upload-artifact@v3
