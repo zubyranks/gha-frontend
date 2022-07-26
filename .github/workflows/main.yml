@@ -105,5 +105,5 @@ jobs:
         repo: gha-backend
         github_token: ${{ secrets.WORKFLOW_ACCESS }}
         workflow_file_name: main.yml
-        client_payload: '{}'
+        client_payload: '{"git-version": "${{ needs.build-and-push.outputs.tag-name }}'
    
