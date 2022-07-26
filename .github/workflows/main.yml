@@ -36,7 +36,7 @@ jobs:
     - name: Automatic Tagging of Releases.
       id: increment-git-tag
       run: |
-        bash ./build/git_update.sh -v major
+        bash ./build/git_update.sh -v patch
 
     - name: Build, Tag, and Push the Image to Amazon ECR
       id: build-image
@@ -105,22 +105,4 @@ jobs:
         event-type: builds
         repository: zubyranks/gha-backend
         client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
-    
-    # - name: Dispatch Builds
-    #   run: |
-    #     curl -XPOST \
-    #       -u "zubyranks:${{ secrets.WORKFLOW_ACCESS }}" \
-    #       -H "Accept: application/vnd.github.v3+json" \
-    #       -H "Content-Type: application/json" https://api.github.com/repos/${{ env.repository }} \
-    #       --data '{"event_type": "builds", "client_payload": {"git-tag": "${{ needs.build-and-push.outputs.tag-name }}" }}'
-
-
-    # - name: Trigger Dagster workflow
-    #   uses: convictional/trigger-workflow-and-wait@v1.3.0
-    #   with:
-    #     owner: zubyranks
-    #     repo: gha-backend
-    #     github_token: ${{ secrets.WORKFLOW_ACCESS }}
-    #     workflow_file_name: main.yml
-    #     client_payload: '{"git-version": "${{ needs.build-and-push.outputs.tag-name }}'
    
