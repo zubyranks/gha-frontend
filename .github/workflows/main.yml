@@ -7,7 +7,7 @@ jobs:
     env:
       aws-region: us-west-2
       ecr-repository: gha-getupside
-      repository: zubyranks/gha-backend
+      repository: "zubyranks/gha-backend"
 
     name: Build and Push to ECR
     runs-on: ubuntu-latest
