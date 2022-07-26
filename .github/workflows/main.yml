@@ -7,6 +7,7 @@ jobs:
     env:
       aws-region: us-west-2
       ecr-repository: gha-getupside
+      repository: gha-backend
 
     name: Build and Push to ECR
     runs-on: ubuntu-latest
@@ -98,12 +99,21 @@ jobs:
         asset_name: release-${{ needs.build-and-push.outputs.tag-name }}
         asset_content_type: application/zip
 
-    - name: Trigger Dagster workflow
-      uses: convictional/trigger-workflow-and-wait@v1.3.0
-      with:
-        owner: zubyranks
-        repo: gha-backend
-        github_token: ${{ secrets.WORKFLOW_ACCESS }}
-        workflow_file_name: main.yml
-        client_payload: '{"git-version": "${{ needs.build-and-push.outputs.tag-name }}'
+    - name: Dispatch Builds
+      run: |
+        curl -XPOST \
+          -u "peter-evans:${{ secrets.WORKFLOW_ACCESS }}" \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Content-Type: application/json" https://api.github.com/repos/${{ env.repository }}/dispatches \
+          --data '{"event_type": "builds", "client_payload": {"git-tag": "${{ needs.build-and-push.outputs.tag-name }}" }}'
+
+
+    # - name: Trigger Dagster workflow
+    #   uses: convictional/trigger-workflow-and-wait@v1.3.0
+    #   with:
+    #     owner: zubyranks
+    #     repo: gha-backend
+    #     github_token: ${{ secrets.WORKFLOW_ACCESS }}
+    #     workflow_file_name: main.yml
+    #     client_payload: '{"git-version": "${{ needs.build-and-push.outputs.tag-name }}'
    
