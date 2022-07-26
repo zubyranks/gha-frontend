@@ -99,7 +99,7 @@ jobs:
         asset_content_type: application/zip
 
     - name: Trigger Dagster workflow
-      uses: convictional/trigger-workflow-and-wait@v1.6.1
+      uses: convictional/trigger-workflow-and-wait@v1.3.0
       with:
         owner: zubyranks
         repo: gha-backend
