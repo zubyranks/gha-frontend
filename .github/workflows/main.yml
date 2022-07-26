@@ -100,8 +100,7 @@ jobs:
     #     asset_content_type: application/zip
 
     - name: Dispatch Builds
-      # uses: peter-evans/repository-dispatch@v2
-      uses: zubyranks/repository-dispatch@v2
+      uses: peter-evans/repository-dispatch@v2
       with:
         token: ${{ secrets.WORKFLOW_ACCESS }}
         event-type: builds
