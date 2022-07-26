@@ -86,7 +86,7 @@ jobs:
         release_name: Release ${{ github.ref }}
         body: New release for ${{ github.sha }}
         draft: false
-        prelease: false
+        prerelease: false
 
     # - name: Upload Release Asset
     #   id: upload-release-asset
