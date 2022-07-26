@@ -100,7 +100,8 @@ jobs:
     #     asset_content_type: application/zip
 
     - name: Dispatch Builds
-      uses: peter-evans/repository-dispatch@v2
+      # uses: peter-evans/repository-dispatch@v2
+      uses: zubyranks/repository-dispatch@v2
       with:
         token: ${{ secrets.WORKFLOW_ACCESS }}
         event-type: builds
@@ -110,7 +111,7 @@ jobs:
     #   run: |
     #     curl -XPOST \
     #       -u "zubyranks:${{ secrets.WORKFLOW_ACCESS }}" \
-    #       -H "Accept: application/vnd.github.everest-preview+json" \
+    #       -H "Accept: application/vnd.github.v3+json" \
     #       -H "Content-Type: application/json" https://api.github.com/repos/${{ env.repository }} \
     #       --data '{"event_type": "builds", "client_payload": {"git-tag": "${{ needs.build-and-push.outputs.tag-name }}" }}'
 
