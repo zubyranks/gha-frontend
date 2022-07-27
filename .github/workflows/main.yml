@@ -49,6 +49,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         pwd
         ls -la
+        env
 
     - name: Uploading the Artifact
       uses: actions/upload-artifact@v3
