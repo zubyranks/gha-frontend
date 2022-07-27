@@ -55,7 +55,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: static-site
-        path: $GITHUB_WORKSPACE
+        path: /home/runner/work/gha-frontend/gha-frontend
 
     outputs:
       tag-name: ${{ steps.increment-git-tag.outputs.git-tag }}
