@@ -35,7 +35,7 @@ jobs:
       with:
         username: ${{ secrets.AWS_ACCESS_KEY_ID }}
         password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        image_name: v1.26.18
+        image_name: dagster
         image_tag: ${{ steps.increment-git-tag.outputs.git-tag }}
         push_git_tag: true
         # registry: ${{ steps.login-ecr.outputs.registry }}
