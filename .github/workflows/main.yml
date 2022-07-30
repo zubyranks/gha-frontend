@@ -38,8 +38,7 @@ jobs:
         image_name: dagster
         image_tag: ${{ steps.increment-git-tag.outputs.git-tag }}
         push_git_tag: true
-        # registry: ${{ steps.login-ecr.outputs.registry }}
-        registry: 931366402038.dkr.ecr.us-west-2.amazonaws.com
+        registry: ${{ steps.login-ecr.outputs.registry }}
         dockerfile: wf_lab.Dockerfile
 
     # - name: Cache Pip Packages.
