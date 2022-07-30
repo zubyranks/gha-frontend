@@ -25,31 +25,42 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Cache Pip Packages
-      uses: actions/cache@v3
+    - name: Build, Tag, and Push the Image to Amazon ECR
+      uses: whoan/docker-build-with-cache-action@fix-yaml-parsing
       with:
-        path: $GITHUB_WORKSPACE
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+        username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # image_name: whoan/docker-images/node
+        image_tag: ${{ steps.increment-git-tag.outputs.git-tag }}
+        push_git_tag: true
+        registry: ${{ steps.login-ecr.outputs.registry }}
+        dockerfile: wf_lab.Dockerfile
+
+    # - name: Cache Pip Packages
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: $GITHUB_WORKSPACE
+    #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-pip-
 
     - name: Automatic Tagging of Releases.
       id: increment-git-tag
       run: |
         bash ./build/git_update.sh -v patch
 
-    - name: Build, Tag, and Push the Image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ env.ecr-repository }}
-        IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        cat $GITHUB_WORKSPACE/main.go
-        ls -la
-        env
+    # - name: Build, Tag, and Push the Image to Amazon ECR
+    #   id: build-image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     ECR_REPOSITORY: ${{ env.ecr-repository }}
+    #     IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+    #   run: |
+    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    #     cat $GITHUB_WORKSPACE/main.go
+    #     ls -la
+    #     env
 
     - name: Uploading the Artifact
       uses: actions/upload-artifact@v3
@@ -100,11 +111,11 @@ jobs:
         asset_name: release-${{ needs.build-and-push.outputs.tag-name }}
         asset_content_type: application/zip
 
-    - name: Dispatch Builds
-      uses: peter-evans/repository-dispatch@v2
-      with:
-        token: ${{ secrets.WORKFLOW_ACCESS }}
-        event-type: workflow_lab
-        repository: zubyranks/gha-backend
-        client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
+    # - name: Dispatch Builds
+    #   uses: peter-evans/repository-dispatch@v2
+    #   with:
+    #     token: ${{ secrets.WORKFLOW_ACCESS }}
+    #     event-type: workflow_lab
+    #     repository: zubyranks/gha-backend
+    #     client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
    
