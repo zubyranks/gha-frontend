@@ -29,7 +29,7 @@ jobs:
       id: increment-git-tag
       run: |
         bash ./build/git_update.sh -v patch
-        
+
     - name: Build, Tag, and Push the Image to Amazon ECR
       uses: whoan/docker-build-with-cache-action@fix-yaml-parsing
       with:
@@ -41,7 +41,7 @@ jobs:
         registry: ${{ steps.login-ecr.outputs.registry }}
         dockerfile: wf_lab.Dockerfile
 
-    # - name: Cache Pip Packages
+    # - name: Cache Pip Packages.
     #   uses: actions/cache@v3
     #   with:
     #     path: $GITHUB_WORKSPACE
