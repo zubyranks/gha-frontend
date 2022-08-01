@@ -1,14 +1,14 @@
 name: Build and Push Golang Image to AWS ECR
 on:
-  push:
-    # branches: [ main ]
+  workflow_dispatch:
+
 jobs:
   build-and-push:
     env:
       aws-region: us-west-2
       ecr-repository: gha-getupside
 
-    name: Build and Push to ECR
+    name: Build and Push to ECR.
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -21,17 +21,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.aws-region }}
 
-    - name: Login to Amazon ECR
+    - name: Login to Amazon ECR.
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Cache Pip Packages
-      uses: actions/cache@v3
-      with:
-        path: $GITHUB_WORKSPACE
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
 
     - name: Automatic Tagging of Releases.
       id: increment-git-tag
@@ -39,17 +31,15 @@ jobs:
         bash ./build/git_update.sh -v patch
 
     - name: Build, Tag, and Push the Image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ env.ecr-repository }}
-        IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f wf_lab.Dockerfile .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        cat $GITHUB_WORKSPACE/main.go
-        ls -la
-        env
+      uses: whoan/docker-build-with-cache-action@fix-yaml-parsing
+      with:
+        username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        image_name: dagster
+        image_tag: gha-getupside_${{ steps.increment-git-tag.outputs.git-tag }}
+        push_git_tag: true
+        registry: ${{ steps.login-ecr.outputs.registry }}
+        dockerfile: wf_lab.Dockerfile
 
     - name: Uploading the Artifact
       uses: actions/upload-artifact@v3
@@ -77,17 +67,26 @@ jobs:
       with:
         filename: site.zip
 
-    - name: Create Release.
+    # - name: Create Release.
+    #   id: create-release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: ${{ needs.build-and-push.outputs.tag-name }}
+    #     release_name: Release ${{ github.ref }}
+    #     body: New release for ${{ github.sha }}
+    #     draft: false
+    #     prerelease: false
+    
+    - name: Creating a Release
+      uses: release-drafter/release-drafter@master
       id: create-release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ needs.build-and-push.outputs.tag-name }}
-        release_name: Release ${{ github.ref }}
-        body: New release for ${{ github.sha }}
-        draft: false
+        tag: "${{ needs.build-and-push.outputs.tag-name }}"
+        publish: true
         prerelease: false
+        config-name: release.yml
 
     - name: Upload Release Asset
       id: upload-release-asset
