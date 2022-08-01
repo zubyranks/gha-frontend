@@ -70,8 +70,8 @@ jobs:
     # - name: Create Release.
     #   id: create-release
     #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #   with:
     #     tag_name: ${{ needs.build-and-push.outputs.tag-name }}
     #     release_name: Release ${{ github.ref }}
@@ -82,6 +82,8 @@ jobs:
     - name: Creating a Release
       uses: release-drafter/release-drafter@v5
       id: create-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag: "${{ needs.build-and-push.outputs.tag-name }}"
         publish: true
