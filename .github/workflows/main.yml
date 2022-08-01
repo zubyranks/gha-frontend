@@ -41,7 +41,7 @@ jobs:
         registry: ${{ steps.login-ecr.outputs.registry }}
         dockerfile: wf_lab.Dockerfile
 
-    # - name: Cache Pip Packages.
+    # - name: Cache Pip Packages
     #   uses: actions/cache@v3
     #   with:
     #     path: $GITHUB_WORKSPACE
