@@ -80,7 +80,7 @@ jobs:
     #     prerelease: false
     
     - name: Creating a Release
-      uses: release-drafter/release-drafter@master
+      uses: release-drafter/release-drafter@v5
       id: create-release
       with:
         tag: "${{ needs.build-and-push.outputs.tag-name }}"
