@@ -67,28 +67,28 @@ jobs:
       with:
         filename: site.zip
 
-    # - name: Create Release
-    #   id: create-release
-    #   uses: actions/create-release@v1
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: ${{ needs.build-and-push.outputs.tag-name }}
-    #     release_name: Release ${{ github.ref }}
-    #     body: New release for ${{ github.sha }}
-    #     draft: false
-    #     prerelease: false
-    
-    - name: Creating a Release.
-      uses: release-drafter/release-drafter@v5
+    - name: Create Release
       id: create-release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag: "${{ needs.build-and-push.outputs.tag-name }}"
-        publish: true
+        tag_name: ${{ needs.build-and-push.outputs.tag-name }}
+        release_name: Release ${{ github.ref }}
+        body: New release for ${{ github.sha }}
+        draft: false
         prerelease: false
-        config-name: release.yml
+    
+    # - name: Creating a Release.
+    #   uses: release-drafter/release-drafter@v5
+    #   id: create-release
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag: "${{ needs.build-and-push.outputs.tag-name }}"
+    #     publish: true
+    #     prerelease: false
+    #     config-name: release.yml
 
     - name: Upload Release Asset
       id: upload-release-asset
