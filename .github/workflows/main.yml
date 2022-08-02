@@ -79,7 +79,7 @@ jobs:
     #     draft: false
     #     prerelease: false
     
-    - name: Creating a Release
+    - name: Creating a Release.
       uses: release-drafter/release-drafter@v5
       id: create-release
       env:
