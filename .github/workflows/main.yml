@@ -10,7 +10,7 @@ on:
 jobs:
   build-and-push:
     env:
-      aws-region: us-west-2
+      aws-region: us-east-1
       ecr-repository: gha-getupside
 
     name: Build and Push to ECR
