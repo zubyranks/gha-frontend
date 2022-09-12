@@ -41,7 +41,7 @@ jobs:
         username: ${{ secrets.AWS_ACCESS_KEY_ID }}
         password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         image_name: ${{ env.ecr_repository }}
-        image_tag: workflow_lab_repo_${{ env.VERSION }}
+        image_tag: workflow_lab_repo_${{ inputs.version }}
         push_git_tag: true
         registry: ${{ steps.login-ecr.outputs.registry }}
         dockerfile: wf_lab.Dockerfile
