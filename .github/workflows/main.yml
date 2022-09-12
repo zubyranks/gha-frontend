@@ -1,4 +1,4 @@
-name: Build and Push Golang Image to AWS ECR
+name: Build and Push Golang Image to AWS ECR.
 on:
   workflow_dispatch:
 
