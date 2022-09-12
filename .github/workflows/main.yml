@@ -11,7 +11,7 @@ jobs:
   build-and-push:
     env:
       aws-region: us-east-1
-      ecr-repository: gha-getupside
+      ecr_repository: gha-getupside
 
     name: Build and Push to ECR.
     runs-on: ubuntu-latest
@@ -40,7 +40,7 @@ jobs:
       with:
         username: ${{ secrets.AWS_ACCESS_KEY_ID }}
         password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        image_name: dagster
+        image_name: ${{ env.ecr_repository }}
         image_tag: workflow_lab_repo_${{ env.VERSION }}
         push_git_tag: true
         registry: ${{ steps.login-ecr.outputs.registry }}
