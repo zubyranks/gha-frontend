@@ -13,7 +13,7 @@ jobs:
       aws-region: us-east-1
       ecr-repository: gha-getupside
 
-    name: Build and Push to ECR
+    name: Build and Push to ECR.
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
