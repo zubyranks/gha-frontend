@@ -1,8 +1,8 @@
 name: Create Release and Tag
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
       
 jobs:
   github-tag-release:
