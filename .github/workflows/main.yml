@@ -1,14 +1,19 @@
 name: Build and Push Golang Image to AWS ECR.
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Set the tag version'
+        required: true 
+        type: string
 
 jobs:
   build-and-push:
     env:
-      aws-region: us-west-2
-      ecr-repository: gha-getupside
+      aws-region: us-east-1
+      ecr_repository: gha-getupside
 
-    name: Build and Push to ECR
+    name: Build and Push to ECR.
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -25,18 +30,18 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Automatic Tagging of Releases.
-      id: increment-git-tag
-      run: |
-        bash ./build/git_update.sh -v patch
+    # - name: Automatic Tagging of Releases.
+    #   id: increment-git-tag
+    #   run: |
+    #     bash ./build/git_update.sh -v patch
 
     - name: Build, Tag, and Push the Image to Amazon ECR
       uses: whoan/docker-build-with-cache-action@fix-yaml-parsing
       with:
         username: ${{ secrets.AWS_ACCESS_KEY_ID }}
         password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        image_name: dagster
-        image_tag: gha-getupside_${{ steps.increment-git-tag.outputs.git-tag }}
+        image_name: ${{ env.ecr_repository }}
+        image_tag: workflow_lab_repo_${{ inputs.version }}
         push_git_tag: true
         registry: ${{ steps.login-ecr.outputs.registry }}
         dockerfile: wf_lab.Dockerfile
@@ -79,27 +84,16 @@ jobs:
     #     draft: false
     #     prerelease: false
     
-    - name: Creating a Release
-      uses: release-drafter/release-drafter@v5
-      id: create-release
+    - name: Create a release.
+      uses: release-drafter/release-drafter@master
+      id: auto-release-notes
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACCESS }}
       with:
-        tag: "${{ needs.build-and-push.outputs.tag-name }}"
+        tag: "${{ inputs.version }}"
         publish: true
         prerelease: false
         config-name: release.yml
-
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: ./site.zip
-        asset_name: release-${{ needs.build-and-push.outputs.tag-name }}
-        asset_content_type: application/zip
 
     - name: Dispatch Builds
       uses: peter-evans/repository-dispatch@v2
@@ -107,5 +101,5 @@ jobs:
         token: ${{ secrets.WORKFLOW_ACCESS }}
         event-type: workflow_lab
         repository: zubyranks/gha-backend
-        client-payload: '{"git-tag": "${{ needs.build-and-push.outputs.tag-name }}"}'
+        client-payload: '{"git-tag": "${{ inputs.version }}"}'
    

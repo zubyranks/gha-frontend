@@ -1,8 +1,8 @@
-name: Create Release and Tag.
+name: Create Release and Tag
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
       
 jobs:
   github-tag-release:
@@ -39,8 +39,8 @@ jobs:
         id: auto-release-notes
         with:
           tag: "${{ steps.increment-git-tag.outputs.git-tag }}"
-          publish: true
-          prerelease: false
+          publish: false
+          prerelease: true
           config-name: release.yml
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACCESS }}
