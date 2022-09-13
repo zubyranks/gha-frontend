@@ -22,28 +22,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: ${{ env.aws-region }}
-
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-#         role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_NUMBER }}:role/gha-frontend-role-auth
-        role-to-assume: arn:aws:iam::931366402038:role/gha-frontend-role-auth
+        role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_NUMBER }}:role/gha-frontend-role-auth
         aws-region: ${{ env.aws-region }}
 
     - name: Login to Amazon ECR.
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-
-    # - name: Automatic Tagging of Releases.
-    #   id: increment-git-tag
-    #   run: |
-    #     bash ./build/git_update.sh -v patch
 
     - name: Build, Tag, and Push the Image to Amazon ECR
       uses: whoan/docker-build-with-cache-action@fix-yaml-parsing
@@ -81,18 +68,6 @@ jobs:
       uses: thedoctor0/zip-release@main
       with:
         filename: site.zip
-
-    # - name: Create Release
-    #   id: create-release
-    #   uses: actions/create-release@v1
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: ${{ needs.build-and-push.outputs.tag-name }}
-    #     release_name: Release ${{ github.ref }}
-    #     body: New release for ${{ github.sha }}
-    #     draft: false
-    #     prerelease: false
     
     - name: Create a release.
       uses: release-drafter/release-drafter@master
