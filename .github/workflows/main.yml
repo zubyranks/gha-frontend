@@ -12,6 +12,9 @@ jobs:
     env:
       aws-region: us-east-1
       ecr_repository: gha-getupside
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read 
 
     name: Build and Push to ECR.
     runs-on: ubuntu-latest
