@@ -35,12 +35,12 @@ jobs:
         with:
           filename: workflow-lab-tag-artifact.zip
 
-      - uses: release-drafter/release-drafter@master
-        id: auto-release-notes
-        with:
-          tag: "${{ steps.increment-git-tag.outputs.git-tag }}"
-          publish: false
-          prerelease: true
-          config-name: release.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACCESS }}
+      # - uses: release-drafter/release-drafter@master
+      #   id: auto-release-notes
+      #   with:
+      #     tag: "${{ steps.increment-git-tag.outputs.git-tag }}"
+      #     publish: false
+      #     prerelease: true
+      #     config-name: release.yml
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACCESS }}
